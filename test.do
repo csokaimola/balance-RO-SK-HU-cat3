@@ -1,5 +1,5 @@
 capture log close
-log using "$output/report/test1_test2_results.log", replace text 
+log using "$output/report/test1_test2_logfile.log", replace text 
 ********************************************************************************
 ** Test 1 and Test 2 for orbis and national data comparison
 ********************************************************************************
@@ -22,13 +22,18 @@ save "$temp/respondent_list", replace
 * SK
 ********************************************************************************
 use "$output/SK_balance_data", clear
+
+preserve
+use $input_orbis/balance_long, clear
+keep if Country == "Slovakia"
+save $temp/balance_long_SK, replace
+restore
+merge 1:1 BvDIDnumber year using $temp/balance_long_SK, generate(test)
+
 rename BvDIDnumber bvdid
 merge m:1 bvdid using "$temp/respondent_list", nogen
 gen respondent = (!missing(masterid))
 label variable respondent "1 if company is respondent, 0 if partner"
-rename bvdid BvDIDnumber
-
-merge 1:1 BvDIDnumber year using $input_orbis/balance_long, generate(test)
 
 * Test 1
 
@@ -45,7 +50,7 @@ foreach balancevar in `SKtfp' {
 local testyears 2011 2015
 foreach i in `testyears' {
   preserve
-  keep if year == `i' & Country == "Slovakia"
+  keep if year == `i'
   tab test
   tab respondent
   display "Year of analysis is `i'"
@@ -70,21 +75,43 @@ foreach i in `testyears' {
 
 
 *Test 2 for growth
-keep if (year == 2015 | year == 2018) & Country == "Slovakia"
-tab test
-tab respondent
+
+drop if year ==.
+keep ln_Turnover ln_Turnover_national respondent bvdid year
+reshape wide ln_Turnover ln_Turnover_national respondent, i(bvdid) j(year)
+
+tab respondent2011
+tab respondent2015
+tab respondent2018
+local testyears_growth 2011 2018
+foreach i in `testyears_growth' {
+  preserve
+  display "Year of analysis is `i'/2015"
+  count if (!missing(ln_Turnover`i', ln_Turnover2015) | !missing(ln_Turnover_national`i', ln_Turnover_national2015)) & respondent2015 == 1 //union respondent
+  count if !missing(ln_Turnover_national`i', ln_Turnover_national2015) & respondent2015 == 1 //national only
+  count if !missing(ln_Turnover`i', ln_Turnover2015) & respondent2015 == 1 //orbis only
+  count if (!missing(ln_Turnover`i', ln_Turnover2015) | !missing(ln_Turnover_national`i', ln_Turnover_national2015)) & respondent2015 == 0 //union partner 
+  count if !missing(ln_Turnover_national`i', ln_Turnover_national2015) & respondent2015 == 0 //national only
+  count if !missing(ln_Turnover`i', ln_Turnover2015) & respondent2015 == 0 //orbis only
+  restore
+  }
 
 ********************************************************************************
 * RO // no data on material costs, so no productivity
 ********************************************************************************
 use "$output/RO_balance_data", clear
+
+preserve
+use $input_orbis/balance_long, clear
+keep if Country == "Romania"
+save $temp/balance_long_RO, replace
+restore
+merge 1:1 BvDIDnumber year using $temp/balance_long_RO, generate(test)
+
 rename BvDIDnumber bvdid
 merge m:1 bvdid using "$temp/respondent_list", nogen
 gen respondent = (!missing(masterid))
 label variable respondent "1 if company is respondent, 0 if partner"
-rename bvdid BvDIDnumber
-
-merge 1:1 BvDIDnumber year using $input_orbis/balance_long, generate(test)
 
 * Test 1
   local ROtfp = "Turnover emp Totalassets"
@@ -100,7 +127,7 @@ foreach balancevar in `ROtfp' {
 local testyears 2011 2015
 foreach i in `testyears' {
   preserve
-  keep if year == `i' & Country == "Romania"
+  keep if year == `i'
   tab test
   tab respondent
   display "Year of analysis is `i'"
@@ -113,21 +140,53 @@ foreach i in `testyears' {
 	count if ln_`balancevar'_national !=. & respondent == 0 //national only
 	count if ln_`balancevar' !=. & respondent == 0 // orbis only
   }
-  
+   display "Materialcosts" 
+   count if Materialcosts !=. & respondent == 1 // orbis only
+   count if Materialcosts !=. & respondent == 0 // orbis only
+
   restore
 }
 
+*Test 2 for growth
+
+drop if year ==.
+keep ln_Turnover ln_Turnover_national respondent bvdid year
+reshape wide ln_Turnover ln_Turnover_national respondent, i(bvdid) j(year)
+
+tab respondent2011
+tab respondent2015
+tab respondent2018
+local testyears_growth 2011 2018
+foreach i in `testyears_growth' {
+  preserve
+  display "Year of analysis is `i'/2015"
+  count if (!missing(ln_Turnover`i', ln_Turnover2015) | !missing(ln_Turnover_national`i', ln_Turnover_national2015)) & respondent2015 == 1 //union respondent
+  count if !missing(ln_Turnover_national`i', ln_Turnover_national2015) & respondent2015 == 1 //national only
+  count if !missing(ln_Turnover`i', ln_Turnover2015) & respondent2015 == 1 //orbis only
+  count if (!missing(ln_Turnover`i', ln_Turnover2015) | !missing(ln_Turnover_national`i', ln_Turnover_national2015)) & respondent2015 == 0 //union partner 
+  count if !missing(ln_Turnover_national`i', ln_Turnover_national2015) & respondent2015 == 0 //national only
+  count if !missing(ln_Turnover`i', ln_Turnover2015) & respondent2015 == 0 //orbis only
+  restore
+  }
+
 ********************************************************************************
-* HU //material cost: ranyag
+* HU 
 ********************************************************************************
 use "$input_HU/balance_orbis_00_18", clear
-merge m:1 bvdid using "$temp/respondent_list", nogen
-gen respondent = (!missing(masterid)) // thanks Geri
-label variable respondent "1 if company is respondent, 0 if partner"
 rename bvdid BvDIDnumber
 rename emp employment
 
-merge 1:1 BvDIDnumber year using $input_orbis/balance_long, generate(test)
+preserve
+use $input_orbis/balance_long, clear
+keep if Country == "Hungary"
+save $temp/balance_long_HU, replace
+restore
+merge 1:1 BvDIDnumber year using $temp/balance_long_HU, generate(test)
+
+rename BvDIDnumber bvdid
+merge m:1 bvdid using "$temp/respondent_list", nogen
+gen respondent = (!missing(masterid))
+label variable respondent "1 if company is respondent, 0 if partner"
 
 * Test 1
 local HUtfp = "Turnover emp Totalassets Materialcosts"
@@ -144,7 +203,7 @@ foreach balancevar in `HUtfp' {
 local testyears 2011 2015
 foreach i in `testyears' {
   preserve
-  keep if year == `i' & Country == "Hungary"
+  keep if year == `i'
   tab test
   tab respondent
   display "Year of analysis is `i'"
@@ -166,6 +225,28 @@ foreach i in `testyears' {
   count if !missing(ln_Turnover, ln_emp, ln_Totalassets, ln_Materialcosts) & respondent == 0 // orbis only
   restore
 }
+
+*Test 2 for growth
+
+drop if year ==.
+keep ln_Turnover ln_Turnover_national respondent bvdid year
+reshape wide ln_Turnover ln_Turnover_national respondent, i(bvdid) j(year)
+
+tab respondent2011
+tab respondent2015
+tab respondent2018
+local testyears_growth 2011 2018
+foreach i in `testyears_growth' {
+  preserve
+  display "Year of analysis is `i'/2015"
+  count if (!missing(ln_Turnover`i', ln_Turnover2015) | !missing(ln_Turnover_national`i', ln_Turnover_national2015)) & respondent2015 == 1 //union respondent
+  count if !missing(ln_Turnover_national`i', ln_Turnover_national2015) & respondent2015 == 1 //national only
+  count if !missing(ln_Turnover`i', ln_Turnover2015) & respondent2015 == 1 //orbis only
+  count if (!missing(ln_Turnover`i', ln_Turnover2015) | !missing(ln_Turnover_national`i', ln_Turnover_national2015)) & respondent2015 == 0 //union partner 
+  count if !missing(ln_Turnover_national`i', ln_Turnover_national2015) & respondent2015 == 0 //national only
+  count if !missing(ln_Turnover`i', ln_Turnover2015) & respondent2015 == 0 //orbis only
+  restore
+  }
 
 
  log close
