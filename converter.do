@@ -35,7 +35,7 @@ scalar EUR2018 = 321.51
 foreach balancevar of local HUbalancevars {
 forvalues year = 2000/2018 {
 
-	generate `balancevar'_EUR`year' = `balancevar'`year' / EUR`year'
+	generate double `balancevar'_EUR`year' = `balancevar'`year' / EUR`year'
 }
 }
 
@@ -60,6 +60,7 @@ preserve
 reshape wide name-BvDIDnumber, i(company_id) j(year)
 generate u1 = runiform(0,100)
 graph bar Sales2004 Sales2005 Sales2006 if u1 <1, over(company_id) stack
+graph export "$output/figure/ROsales_check1to10000.png", replace
 restore
 
 *No comparable Orbis data on RO expenses, fix assets. Create histograms to check whether same unit: Exp/Sales <1, Tang ass/ Fix <1. Tang is same magnitude, and ratios (meaning percentages) seem rational, but Expenses is weird.
@@ -67,7 +68,9 @@ gen expcheck = Expenses/Sales
 gen tangcheck = Tang_assets/Fix_assets
 summarize expcheck tangcheck, detail
 hist expcheck 
+graph export "$output/figure/ROexpenditures_per_sales.png", replace
 hist tangcheck
+graph export "$output/figure/ROtang_per_fix.png", replace
 drop expcheck tangcheck
 
 * long to wide because of different exchange rates each year
@@ -100,7 +103,7 @@ scalar EUR2019 = 4.783
 foreach balancevar of local RObalancevars {
 forvalues year = 2000/2019 {
 
-	generate `balancevar'_EUR`year' = `balancevar'`year' / EUR`year'/1000
+	generate double `balancevar'_EUR`year' = `balancevar'`year' / EUR`year'/1000
 }
 }
 
@@ -123,9 +126,9 @@ drop if year ==.
 reshape wide name-fid registered-material_costs, i(BvDIDnumber) j(year)
 generate u1 = runiform(0,100)
 graph bar tang_assets2008 tang_assets2009 tang_assets2010 if u1 <1, over(BvDIDnumber) stack
-graph export "$output/figure/tang_check1to30.png", replace
+graph export "$output/figure/SKtang_check1to30.png", replace
 graph bar material_costs2008 material_costs2009 material_costs2010 if u1 <1, over(BvDIDnumber) stack
-graph export "$output/figure/material_check1to30.png", replace
+graph export "$output/figure/SKmaterial_check1to30.png", replace
 
 restore
 * unit of sales seems to be ok (1000EUR same as orbis). Check mat_cost/sales<1?
@@ -133,6 +136,6 @@ forvalues i = 2008/2010 {
 gen matcheck`i' = material_costs/sales if year==`i'
 summarize matcheck`i', detail
 hist matcheck`i'
-graph export $output/figure/mat_per_sales`i'.png, replace
+graph export $output/figure/SKmat_per_sales`i'.png, replace
 drop matcheck`i'
 }
