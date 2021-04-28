@@ -130,10 +130,11 @@ rename emp employment
 merge 1:1 BvDIDnumber year using $input_orbis/balance_long, generate(test)
 
 * Test 1
-local HUtfp = "Turnover emp Totalassets"
+local HUtfp = "Turnover emp Totalassets Materialcosts"
 rename sales Turnover_national
 rename employment emp_national
 rename eszk Totalassets_national
+rename ranyag Materialcosts_national
   
 foreach balancevar in `HUtfp' {
   gen ln_`balancevar' = ln(`balancevar')
