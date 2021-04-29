@@ -23,6 +23,7 @@ save "$temp/respondent_list", replace
 ********************************************************************************
 use "$output/SK_balance_data", clear
 
+* filter SK data from orbis
 preserve
 use $input_orbis/balance_long, clear
 keep if Country == "Slovakia"
@@ -30,13 +31,16 @@ save $temp/balance_long_SK, replace
 restore
 merge 1:1 BvDIDnumber year using $temp/balance_long_SK, generate(test)
 
+* merge with respondent dummy
 rename BvDIDnumber bvdid
 merge m:1 bvdid using "$temp/respondent_list", nogen
 gen respondent = (!missing(masterid))
 label variable respondent "1 if company is respondent, 0 if partner"
 
 * Test 1
-
+********************************************************************************
+* create same names for same national and orbis variables (for easier use in loop)
+* add logarithmic variables
 local SKtfp = "Turnover emp Totalassets Materialcosts"
 rename sales Turnover_national
 rename employees emp_national
@@ -75,7 +79,7 @@ foreach i in `testyears' {
 
 
 *Test 2 for growth
-
+********************************************************************************
 drop if year ==.
 keep ln_Turnover ln_Turnover_national respondent bvdid year
 reshape wide ln_Turnover ln_Turnover_national respondent, i(bvdid) j(year)
@@ -97,10 +101,11 @@ foreach i in `testyears_growth' {
   }
 
 ********************************************************************************
-* RO // no data on material costs, so no productivity
+* RO // no national data on material costs, so no productivity
 ********************************************************************************
 use "$output/RO_balance_data", clear
 
+* filter RO data from orbis
 preserve
 use $input_orbis/balance_long, clear
 keep if Country == "Romania"
@@ -108,12 +113,16 @@ save $temp/balance_long_RO, replace
 restore
 merge 1:1 BvDIDnumber year using $temp/balance_long_RO, generate(test)
 
+* merge with respondent dummy
 rename BvDIDnumber bvdid
 merge m:1 bvdid using "$temp/respondent_list", nogen
 gen respondent = (!missing(masterid))
 label variable respondent "1 if company is respondent, 0 if partner"
 
 * Test 1
+********************************************************************************
+* create same names for same national and orbis variables (for easier use in loop)
+* add logarithmic variables (Materialcosts just for orbis data)
   local ROtfp = "Turnover emp Totalassets"
   rename Sales Turnover_national
   rename Employment emp_national
@@ -123,7 +132,8 @@ foreach balancevar in `ROtfp' {
   gen ln_`balancevar' = ln(`balancevar')
   gen ln_`balancevar'_national = ln(`balancevar'_national)
 }
-
+  gen ln_Materialcosts = ln(Materialcosts)
+  
 local testyears 2011 2015
 foreach i in `testyears' {
   preserve
@@ -140,15 +150,16 @@ foreach i in `testyears' {
 	count if ln_`balancevar'_national !=. & respondent == 0 //national only
 	count if ln_`balancevar' !=. & respondent == 0 // orbis only
   }
-   display "Materialcosts" 
-   count if Materialcosts !=. & respondent == 1 // orbis only
-   count if Materialcosts !=. & respondent == 0 // orbis only
+   display "productivity" 
+   count if !missing(ln_Turnover, ln_emp, ln_Totalassets, ln_Materialcosts) & respondent == 1 // orbis only
+   count if !missing(ln_Turnover, ln_emp, ln_Totalassets, ln_Materialcosts) & respondent == 0 // orbis only
+
 
   restore
 }
 
 *Test 2 for growth
-
+********************************************************************************
 drop if year ==.
 keep ln_Turnover ln_Turnover_national respondent bvdid year
 reshape wide ln_Turnover ln_Turnover_national respondent, i(bvdid) j(year)
@@ -176,6 +187,7 @@ use "$input_HU/balance_orbis_00_18", clear
 rename bvdid BvDIDnumber
 rename emp employment
 
+* filter HU data from orbis
 preserve
 use $input_orbis/balance_long, clear
 keep if Country == "Hungary"
@@ -183,12 +195,16 @@ save $temp/balance_long_HU, replace
 restore
 merge 1:1 BvDIDnumber year using $temp/balance_long_HU, generate(test)
 
+* merge with respondent dummy
 rename BvDIDnumber bvdid
 merge m:1 bvdid using "$temp/respondent_list", nogen
 gen respondent = (!missing(masterid))
 label variable respondent "1 if company is respondent, 0 if partner"
 
 * Test 1
+********************************************************************************
+* create same names for same national and orbis variables (for easier use in loop)
+* add logarithmic variables
 local HUtfp = "Turnover emp Totalassets Materialcosts"
 rename sales Turnover_national
 rename employment emp_national
@@ -227,7 +243,7 @@ foreach i in `testyears' {
 }
 
 *Test 2 for growth
-
+********************************************************************************
 drop if year ==.
 keep ln_Turnover ln_Turnover_national respondent bvdid year
 reshape wide ln_Turnover ln_Turnover_national respondent, i(bvdid) j(year)
