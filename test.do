@@ -51,7 +51,7 @@ foreach balancevar in `SKtfp' {
   gen ln_`balancevar'_national = ln(`balancevar'_national)
 }
 
-local testyears 2011 2015
+local testyears 2001 2006 2011 2015
 foreach i in `testyears' {
   preserve
   keep if year == `i'
@@ -134,7 +134,7 @@ foreach balancevar in `ROtfp' {
 }
   gen ln_Materialcosts = ln(Materialcosts)
   
-local testyears 2011 2015
+local testyears 2001 2006 2011 2015
 foreach i in `testyears' {
   preserve
   keep if year == `i'
@@ -216,7 +216,7 @@ foreach balancevar in `HUtfp' {
   gen ln_`balancevar'_national = ln(`balancevar'_national)
 }
 
-local testyears 2011 2015
+local testyears 2001 2006 2011 2015
 foreach i in `testyears' {
   preserve
   keep if year == `i'
