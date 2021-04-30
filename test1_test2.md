@@ -182,29 +182,29 @@ Partner | 763 | 696 | 782
 For respondents (sum:1543), in national only. By country, variable: share of non missing in 2006, same for 2001.
 ## Slovakia - respondent (sum:395), national
 ### 2001
-!missing(ln_sales): 86
-!missing(ln_employment): 86
+!missing(ln_sales): 86<br/>
+!missing(ln_employment): 86<br/>
 !missing(ln_sales, ln_employment, ln_assets, ln_material_costs): 53
 ### 2006
-!missing(ln_sales): 130
-!missing(ln_employment): 130
+!missing(ln_sales): 130<br/>
+!missing(ln_employment): 130<br/>
 !missing(ln_sales, ln_employment, ln_assets, ln_material_costs): 113
 ## Romania - respondent (sum: 589), national
 ### 2001
-!missing(ln_sales): 320
-!missing(ln_employment): 300
+!missing(ln_sales): 320<br/>
+!missing(ln_employment): 300<br/>
 !missing(ln_sales, ln_employment, ln_assets, ln_material_costs): -
 ### 2006
-!missing(ln_sales): 476
-!missing(ln_employment): 473
+!missing(ln_sales): 476<br/>
+!missing(ln_employment): 473<br/>
 !missing(ln_sales, ln_employment, ln_assets, ln_material_costs): -
 
 ## Hungary - respondent (sum: 559), national
 ### 2001
-!missing(ln_sales): 399
-!missing(ln_employment): 390
+!missing(ln_sales): 399<br/>
+!missing(ln_employment): 390<br/>
 !missing(ln_sales, ln_employment, ln_assets, ln_material_costs): 386
 ### 2006
-!missing(ln_sales): 477
-!missing(ln_employment): 470
+!missing(ln_sales): 477<br/>
+!missing(ln_employment): 470<br/>
 !missing(ln_sales, ln_employment, ln_assets, ln_material_costs): 470
