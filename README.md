@@ -59,12 +59,12 @@ Issue 78: Harmonize Balance Data for HU, RO, SK<br/>
 - RO coverage is quite good, ca 1000-1600 obs per year by variable. 2000-2019
 
 ## Further to-do-s
-Data prep must-have
-- Find ROL exchange rate 2000-2004? data on ECB from 2005, before: WDI in USD, should exchange twice USD->EUR->ROL. We should use just one data source (possibly WDI)
-- Use different rates for stock & flow data (stock: end of the year, eg. Tang assets, Fix assets / flow: year avg, eg. Sales, Export)
-- Correct some RO BvDIDnumber-s (eg. RO1.10013e+11)
+Data prep must-have<br />
+- Find ROL exchange rate 2000-2004? data on ECB from 2005, before: WDI in USD, should exchange twice USD->EUR->ROL. We should use just one data source (possibly WDI)<br />
+- Use different rates for stock & flow data (stock: end of the year, eg. Tang assets, Fix assets / flow: year avg, eg. Sales, Export)<br />
+- Correct some RO BvDIDnumber-s (eg. RO1.10013e+11)<br />
 - check HU outliers (with Andris. HU balance is already corrected, "konszolidált eredmények" could be in orbis data)<br/>
 
-Finalize dataset
-- merge anon ids (create cat2 data)
+Finalize dataset<br />
+- merge anon ids (create cat2 data)<br />
 - finalize beads

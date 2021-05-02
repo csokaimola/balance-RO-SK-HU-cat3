@@ -13,20 +13,20 @@ putpdf begin
 
 * report on variable coverage (FIXME, ugly)
   putpdf paragraph, font(,20) halign(center)
-  putpdf text ("Report on RO balance variable coverage by year"), linebreak(2)
+  putpdf text ("Report on RO national variable coverage by year"), linebreak(2)
   putpdf paragraph
   putpdf text ("Tabstat where columns are variables, respectively: Sales Fix_assets Tang_assets Employment Expenses, rows are years (Stat1: 2000,...Stat21: 2020)."), linebreak
   tabstat Sales_EUR Fix_assets_EUR Tang_assets_EUR Employment Expenses_EUR, stat(count) by(year) save
   putpdf table ROcoverage = rmatrices
   putpdf pagebreak
-  
+
 * create a report about comparison (correl, mean and median of ratio, log scatter plot)
   local ROorbis "emp Turnover Tangible"
   local ROvars "Employment Sales_EUR Tang_assets_EUR"
   local n : word count `ROorbis'
 
   putpdf paragraph, font(,20) halign(center)
-  putpdf text ("Report on RO balance and Orbis comparison"), linebreak(2)
+  putpdf text ("Report on RO national and Orbis comparison"), linebreak(2)
   putpdf paragraph
   putpdf text ("Variables from Orbis: emp Turnover Tangible"), linebreak
   putpdf paragraph
@@ -75,7 +75,7 @@ putpdf begin
 
 * report on variable coverage (FIXME, ugly)
   putpdf paragraph, font(,20) halign(center)
-  putpdf text ("Report on SK balance variable coverage by year"), linebreak(2)
+  putpdf text ("Report on SK national variable coverage by year"), linebreak(2)
   putpdf paragraph
   putpdf text ("Tabstat where columns are variables, respectively: employees sales sales_abroad tang_assets fixed_assets material_costs, rows are years (Stat1: 2000,...Stat21: 2020)."), linebreak
   tabstat employees sales sales_abroad tang_assets fixed_assets material_costs, stat(count) by(year) save
@@ -88,7 +88,7 @@ putpdf begin
   local n : word count `SKorbis'
 
   putpdf paragraph, font(,20) halign(center)
-  putpdf text ("Report on SK balance and Orbis comparison"), linebreak(2)
+  putpdf text ("Report on SK national and Orbis comparison"), linebreak(2)
   putpdf paragraph
   putpdf text ("Variables from Orbis: emp Turnover Tangible Exportrevenue Materialcosts"), linebreak
   putpdf paragraph
@@ -139,7 +139,7 @@ putpdf begin
 
 * report on variable coverage (FIXME, ugly)
   putpdf paragraph, font(,20) halign(center)
-  putpdf text ("Report on HU balance variable coverage by year"), linebreak(2)
+  putpdf text ("Report on HU national variable coverage by year"), linebreak(2)
   putpdf paragraph
   putpdf text ("Tabstat where columns are variables, respectively: sales employment tanass eszk export persexp pretax immat, rows are years (Stat1: 2000,...Stat21: 2020)."), linebreak
   tabstat sales_EUR employment tanass_EUR eszk_EUR export_EUR persexp_EUR pretax_EUR immat_EUR, stat(count) by(year) save
@@ -152,7 +152,7 @@ putpdf begin
   local n : word count `HUorbis'
 
   putpdf paragraph, font(,20) halign(center)
-  putpdf text ("Report on HU balance and Orbis comparison"), linebreak(2)
+  putpdf text ("Report on HU national and Orbis comparison"), linebreak(2)
   putpdf paragraph
   putpdf text ("Variables from Orbis: Turnover emp Tangible Exportrevenue Intangibles Costsofemployees Totalassets"), linebreak
   putpdf paragraph
