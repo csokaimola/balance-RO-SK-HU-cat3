@@ -64,7 +64,7 @@ graph export "$output/figure/ROsales_check1to10000.png", replace
 restore
 
 *No comparable Orbis data on RO expenses, fix assets. Create histograms to check whether same unit: Exp/Sales <1, Tang ass/ Fix <1. Tang is same magnitude, and ratios (meaning percentages) seem rational, but Expenses is weird.
-gen expcheck = Expenses/Materialcosts
+gen expcheck = Expenses/Sales
 gen tangcheck = Tang_assets/Fix_assets
 summarize expcheck tangcheck, detail
 hist expcheck 
