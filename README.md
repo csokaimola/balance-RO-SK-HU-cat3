@@ -64,6 +64,7 @@ Data prep must-have<br />
 - Use different rates for stock & flow data (stock: end of the year, eg. Tang assets, Fix assets / flow: year avg, eg. Sales, Export)<br />
 - Correct some RO BvDIDnumber-s (eg. RO1.10013e+11)<br />
 - check HU outliers (with Andris. HU balance is already corrected, "konszolidált eredmények" could be in orbis data)<br/>
+- HU ranyag/Materialcosts orbis ratio mean = 5 (median=1.2)
 
 Finalize dataset<br />
 - merge anon ids (create cat2 data)<br />

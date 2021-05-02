@@ -7,11 +7,12 @@ use "$input_HU/balance_orbis_00_18.dta", clear
 * long to wide because of different exchange rates each year
 drop if year == .
 keep bvdid year sales-immat
+drop ranyag01 ranyag02 ranyag03 ranyag04 ranyagesz
 reshape wide sales - immat , i(bvdid) j(year)
 
 * exchange rates (end of the year): https://www.mnb.hu/arfolyam-lekerdezes
 
-local HUbalancevars "sales tanass eszk export persexp pretax immat"
+local HUbalancevars "sales tanass eszk export ranyag persexp pretax immat"
 scalar EUR2000 = 264.94 
 scalar EUR2001 = 246.33
 scalar EUR2002 = 235.90
@@ -41,7 +42,7 @@ forvalues year = 2000/2018 {
 
 * back to long
 keep bvdid emp* *_EUR*
-reshape long emp sales_EUR tanass_EUR eszk_EUR export_EUR persexp_EUR pretax_EUR immat_EUR , i(bvdid) j(year)
+reshape long emp sales_EUR tanass_EUR eszk_EUR export_EUR ranyag_EUR persexp_EUR pretax_EUR immat_EUR, i(bvdid) j(year)
 foreach balancevar of local HUbalancevars {
 label variable `balancevar'_EUR "value converted to 1000 EUR"
 }
