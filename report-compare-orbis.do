@@ -15,14 +15,14 @@ putpdf begin
   putpdf paragraph, font(,20) halign(center)
   putpdf text ("Report on RO national variable coverage by year"), linebreak(2)
   putpdf paragraph
-  putpdf text ("Tabstat where columns are variables, respectively: Sales Fix_assets Tang_assets Employment Expenses, rows are years (Stat1: 2000,...Stat21: 2020)."), linebreak
+  putpdf text ("Tabstat where columns are variables, respectively: Sales Fix_assets Tang_assets Employment Expenses, rows are years (Stat2: 2000,...Stat22: 2020)."), linebreak
   tabstat Sales_EUR Fix_assets_EUR Tang_assets_EUR Employment Expenses_EUR, stat(count) by(year) save
   putpdf table ROcoverage = rmatrices
   putpdf pagebreak
 
 * create a report about comparison (correl, mean and median of ratio, log scatter plot)
-  local ROorbis "emp Turnover Tangible"
-  local ROvars "Employment Sales_EUR Tang_assets_EUR"
+  local ROorbis "emp Turnover Tangible Totalassets"
+  local ROvars "Employment Sales_EUR Tang_assets_EUR Fix_assets_EUR"
   local n : word count `ROorbis'
 
   putpdf paragraph, font(,20) halign(center)
@@ -141,7 +141,7 @@ putpdf begin
   putpdf paragraph, font(,20) halign(center)
   putpdf text ("Report on HU national variable coverage by year"), linebreak(2)
   putpdf paragraph
-  putpdf text ("Tabstat where columns are variables, respectively: sales employment tanass eszk export persexp pretax immat, rows are years (Stat1: 2000,...Stat21: 2020)."), linebreak
+  putpdf text ("Tabstat where columns are variables, respectively: sales employment tanass eszk export persexp pretax immat, rows are years (Stat2: 2000,...Stat22: 2020)."), linebreak
   tabstat sales_EUR employment tanass_EUR eszk_EUR export_EUR persexp_EUR pretax_EUR immat_EUR, stat(count) by(year) save
   putpdf table HUcoverage = rmatrices
   putpdf pagebreak
