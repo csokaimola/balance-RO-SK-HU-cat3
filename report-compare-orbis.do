@@ -148,7 +148,7 @@ putpdf begin
 
   * create a report about comparison (correl, mean and median of ratio, log scatter plot) 
   local HUorbis "Turnover emp Tangible Exportrevenue Intangibles Costsofemployees Totalassets Materialcosts"
-  local HUvars "sales_EUR employment tanass_EUR export_EUR immat_EUR persexp_EUR eszk_EUR ranyag_EUR"
+  local HUvars "sales_EUR employment tanass_EUR export_EUR immat_EUR persexp_EUR eszk_EUR ranyag01_EUR"
   local n : word count `HUorbis'
 
   putpdf paragraph, font(,20) halign(center)
@@ -156,7 +156,7 @@ putpdf begin
   putpdf paragraph
   putpdf text ("Variables from Orbis: Turnover emp Tangible Exportrevenue Intangibles Costsofemployees Totalassets Materialcosts"), linebreak
   putpdf paragraph
-  putpdf text ("Variables from HU balance: sales employment tanass export immat persexp eszk ranyag (original data converted to 1000 EUR, end of the year exchange rate)"), linebreak
+  putpdf text ("Variables from HU balance: sales employment tanass export immat persexp eszk ranyag01 (original data converted to 1000 EUR, end of the year exchange rate)"), linebreak
   putpdf paragraph
   putpdf text ("Variables in HU balance not compared to Orbis data: other LTS vars"), linebreak(2)
 

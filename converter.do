@@ -23,7 +23,7 @@ foreach balancevar of local HU_stock_vars {
 	label variable `balancevar'_EUR "value converted to 1000 EUR"
 }
 
-local HU_flow_vars "sales export ranyag persexp pretax"
+local HU_flow_vars "sales export ranyag ranyag01 persexp pretax"
 foreach balancevar of local HU_flow_vars {
 
 	generate double `balancevar'_EUR = `balancevar' / hungarianforintaverage 
