@@ -52,18 +52,10 @@ Issue 78: Harmonize Balance Data for HU, RO, SK<br/>
 - **RO data was converted from 1 RON to 1000 EUR** on end of the year ECB rate for stock, year average for flow data (https://sdw.ecb.europa.eu/browse.do?node=9691296) because comparable orbis data ratio was around 4500, whereas 1000 EUR= ca 5000 RON. Data before 2005 was exchanged on 2005 rate: I checked whether anything happened in 2005 with the currencies: bar chart of random 1% of sample. There was growth in Sales 2004-2006, but nothing unusual, like 1/10000, so I guess **2000-2004 values are in 2005 RON**.
 - There was **no comparable orbis data on RO Expenses, Fix_assets, but I exchanged them as well**. To check whether its ok to do so, I compared them to Sales and Tang ass (we know already that Sales and Tang ass was in 1000EUR because correl wit orbis data and ratio mean, median is nice in report). Created histograms to check whether same unit: Exp/Sales <1, Tang ass/ Fix <1. Tang is same magnitude, and ratios (meaning percentages) seems rational. (relating code in converter.do)
 - In **SK tangible, material_costs ration mean ~ 9 -> Discrepancy probably due to outliers**. Discrepancy is not due to currency change koruna to EUR in 2009 (EUR replaced SKK in 2009 on a rate: 30 SKK = 1 EUR), because i checked whether anything happened in 2009 (1 January) with the currencies:bar chart of random 1% of sample. There was growth in tang_assets and material_costs 2008-2009, but nothing unusual, like 1/30, so I guess before-2009 values already in EUR. Also checked mat_cost/sales<1 in the three years (we know already that sales was in 1000EUR because correl wit orbis data and ratio mean, median is nice in report), and it was ok, around 70% which is rational. (relating code in converter.do)
+- In national **HU data ranyag01 is material cost**, ranyag is material expenditure.
+- **HU outliers in terms of Turnover_ratio** in 2015: when national/orbis <0.8 sometimes consolidated data in Orbis (MOL, FMV, Alteo, Nitrokemia, Univer ellenőrizve). when >1.25 Egis (10686506) 2015 value of Orbis is 2014 value in national data due to "eltérő üzleti éves bevallás".
 
 ## Observations by country by year, coverage of individual variables
 - HU coverage 1000-1300 is quite good, ca 1000-1300 obs per year by variable. 2000-2018
 - **SK coverage is poor**, ca 300-600 obs per year by variable. 2000-2018
 - RO coverage is quite good, ca 1000-1600 obs per year by variable. 2000-2019
-
-## Further to-do-s
-Data prep must-have<br />
-- Correct some RO BvDIDnumber-s (eg. RO1.10013e+11)<br />
-- check HU outliers (with Andris. HU balance is already corrected, "konszolidált eredmények" could be in orbis data)<br/>
-- HU ranyag/Materialcosts orbis ratio mean = 5 (median=1.2)
-
-Finalize dataset<br />
-- merge anon ids (create cat2 data)<br />
-- finalize beads
