@@ -35,7 +35,7 @@ keep if check == 3
 
 * report on extreme deviations in data enrichement (count and mean of ratio bins)
   local HUorbis "Turnover emp Totalassets Materialcosts"
-  local HUvars "sales_EUR employment eszk_EUR ranyag_EUR"
+  local HUvars "sales_EUR employment eszk_EUR ranyag01_EUR"
   local n : word count `HUorbis'
 
   forvalues i = 1/`n' {
@@ -68,6 +68,22 @@ foreach a in `HUorbis' {
 	restore
 	}
 log close
+
+order originalid BvDIDnumber name_settlement name sales sales_EUR Turnover Turnover_ratio employment emp eszk eszk_EUR Totalassets ranyag ranyag01 ranyag_EUR ranyag01_EUR Materialcosts
+*bro name sales_EUR Turnover Turnover_ratio if Turnover_bin == "<0.5" | Turnover_bin == "0.5-0.8" | Turnover_bin == "1.25-2"| Turnover_bin == ">2"
+* national/orbis ratio < 0.8 
+  * orbis: konszolidált, national: jó (MOL, FMV, Alteo, Nitrokemia, Univer ellenőrizve)
+  * Eagle ottawa (12715093): magyar adatban rossz (csak 1 havi eredmény volt, András javítja)
+  * firm name rosszul match-elt? pl Unilever, Nitrokémia
+bro originalid BvDIDnumber name_settlement name sales sales_EUR Turnover Turnover_ratio employment emp eszk eszk_EUR Totalassets ranyag ranyag01 ranyag_EUR ranyag01_EUR Materialcosts if Turnover_bin == "<0.5" | Turnover_bin == "0.5-0.8"  // 54 ilyen cég
+
+* national/orbis ratio > 1.25
+* Egis (10686506): eltérő üzleti éves, a nationalban 128 mrd huf 2014-ben van 2015 helyett, tehát "el van tolva" 1 évvel. Valószínű másoknál is ez lehet
+* Küpper (12812389): csak ő volt nagyon nagy 185 ratio. nem az eltérő üzleti év okozza az eltérést, a magyar adat jó, az Orbisos adat aránytalanul kicsi
+* Émász (10737743): jó a nemzeti adat, csak rosszul nyújtotta be cég a bevallást és utólag korrigálta (az e-beszámolóban a konszolidált kisebb, mint a nem konszolidált)
+bro originalid BvDIDnumber name_settlement name sales sales_EUR Turnover Turnover_ratio employment emp eszk eszk_EUR Totalassets ranyag ranyag01 ranyag_EUR ranyag01_EUR Materialcosts if Turnover_bin == "1.25-2" | Turnover_bin == ">2"  // 9
+
+
 
 ********************************************************************************
 * RO
@@ -112,6 +128,9 @@ foreach a in `ROorbis' {
 	restore
 	}
 log close
+
+bro Name BvDIDnumber Sales Sales_EUR Turnover Turnover_ratio BvDIDnumber if Turnover_bin == "<0.5" | Turnover_bin == "0.5-0.8"  // 54 ilyen cég
+
 
 ********************************************************************************
 * SK
