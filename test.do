@@ -123,16 +123,16 @@ label variable respondent "1 if company is respondent, 0 if partner"
 ********************************************************************************
 * create same names for same national and orbis variables (for easier use in loop)
 * add logarithmic variables (Materialcosts just for orbis data)
-  local ROtfp = "Turnover emp Totalassets"
+  local ROtfp = "Turnover emp Totalassets Materialcosts"
   rename Sales Turnover_national
   rename Employment emp_national
   rename Fix_assets Totalassets_national
+  rename Expenses Materialcosts_national
 
 foreach balancevar in `ROtfp' {
   gen ln_`balancevar' = ln(`balancevar')
   gen ln_`balancevar'_national = ln(`balancevar'_national)
 }
-  gen ln_Materialcosts = ln(Materialcosts)
   
 local testyears 2001 2006 2011 2015
 foreach i in `testyears' {
@@ -151,12 +151,19 @@ foreach i in `testyears' {
 	count if ln_`balancevar' !=. & respondent == 0 // orbis only
   }
    display "productivity" 
-   count if !missing(ln_Turnover, ln_emp, ln_Totalassets, ln_Materialcosts) & respondent == 1 // orbis only
-   count if !missing(ln_Turnover, ln_emp, ln_Totalassets, ln_Materialcosts) & respondent == 0 // orbis only
-
+  count if (!missing(ln_Turnover, ln_emp, ln_Totalassets, ln_Materialcosts) | !missing(ln_Turnover_national, ln_emp_national, ln_Totalassets_national, ln_Materialcosts_national)) & respondent == 1 //union respondent 
+  count if !missing(ln_Turnover_national, ln_emp_national, ln_Totalassets_national, ln_Materialcosts_national) & respondent == 1 //national only
+  count if !missing(ln_Turnover, ln_emp, ln_Totalassets, ln_Materialcosts) & respondent == 1 // orbis only
+  count if (!missing(ln_Turnover, ln_emp, ln_Totalassets, ln_Materialcosts) | !missing(ln_Turnover_national, ln_emp_national, ln_Totalassets_national, ln_Materialcosts_national)) & respondent == 0 // union partner 
+  count if !missing(ln_Turnover_national, ln_emp_national, ln_Totalassets_national, ln_Materialcosts_national) & respondent == 0 //national only
+  count if !missing(ln_Turnover, ln_emp, ln_Totalassets, ln_Materialcosts) & respondent == 0 // orbis only
 
   restore
 }
+
+* For respondents (sum:1543), in national only. By country, variable: share of non missing in 2006, same for 2001.
+count if !missing(ln_Turnover_national, ln_emp_national, ln_Totalassets_national, ln_Materialcosts_national) & year == 2001 & respondent == 1
+count if !missing(ln_Turnover_national, ln_emp_national, ln_Totalassets_national, ln_Materialcosts_national) & year == 2006 & respondent == 1
 
 *Test 2 for growth
 ********************************************************************************

@@ -94,8 +94,8 @@ keep if check == 3
 
 * report on extreme deviations in data enrichement (count and mean of ratio bins)
 
-  local ROorbis "Turnover emp Totalassets"
-  local ROvars "Sales_EUR Employment Fix_assets_EUR"
+  local ROorbis "Turnover emp Totalassets Materialcosts"
+  local ROvars "Sales_EUR Employment Fix_assets_EUR Expenses_EUR"
   local n : word count `ROorbis'
 
   forvalues i = 1/`n' {
@@ -120,7 +120,7 @@ capture log close
 log using "$output/report/deviations_logfile_RO.log", replace text 
 
 * write out in table
-local ROorbis "Turnover emp Totalassets"
+local ROorbis "Turnover emp Totalassets Materialcosts"
 foreach a in `ROorbis' {
     preserve
 	collapse (count) Count=`a'_ratio (mean) Mean=`a'_ratio,  by(`a'_bin)
@@ -129,7 +129,7 @@ foreach a in `ROorbis' {
 	}
 log close
 
-bro Name BvDIDnumber Sales Sales_EUR Turnover Turnover_ratio BvDIDnumber if Turnover_bin == "<0.5" | Turnover_bin == "0.5-0.8"  // 54 ilyen cég
+bro name BvDIDnumber Sales Sales_EUR Turnover Turnover_ratio BvDIDnumber if Turnover_bin == "<0.5" | Turnover_bin == "0.5-0.8"  // 54 ilyen cég
 
 
 ********************************************************************************

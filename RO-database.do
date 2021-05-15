@@ -6,7 +6,7 @@
 * ssc instal renvarlab
 
 * Create panel from Sheet1 (names and ID in "cross-section")
-  import excel using "$input_RO_SK/Date_firme_MNB.xlsx", sheet("Sheet1") firstrow clear
+  import excel using "$input_RO_SK/Date_firme_MNB_0511.xlsx", sheet("Sheet1") firstrow clear
   xtset company_id
   forvalues i = 2000/2019 {
     generate _`i' = `i'
@@ -18,7 +18,7 @@
 * Create panel .dta from separate .xlsx sheets
   local ROvars Sales Fix_assets Tang_assets Employment Expenses
   foreach x in `ROvars' {
-    import excel using "$input_RO_SK/Date_firme_MNB.xlsx", sheet("`x'") firstrow clear 
+    import excel using "$input_RO_SK/Date_firme_MNB_0511.xlsx", sheet("`x'") firstrow clear 
     xtset CUIfirma
     renvarlab B-U, label
     reshape long _, i(CUIfirma) j(year) 
@@ -38,7 +38,7 @@
   label variable Fix_assets "Fixed assets = imobilizari corporale+ imobilizari necorporale + imobilizari financiare (tárgyi+immat+pénzügyi eszközök)"
   label variable Tang_assets "Tangible assets = imobilizari corporale (tárgyi eszközök)"
   label variable Employment "Employment = numar salariati. (állományi létszám)"
-  label variable Expenses "Expenses =  Cheltuieli exploatare total (teljes költség)"
+  label variable Expenses "Expenses =  Material cost"
   label variable company_id "from firm.csv BVDid"
   gen country = "RO"
   format company_id %11.0f

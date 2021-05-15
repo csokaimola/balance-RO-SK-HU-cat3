@@ -64,11 +64,11 @@ Sample| Orbis only | National only | Union
 Respondent | 531 | 554 | 559
 Partner |996  | 1027 | 1035
 
-!missing(ln_sales, ln_employment, ln_assets, ln_material_costs): No data on material costs in National
+!missing(ln_sales, ln_employment, ln_assets, ln_material_costs)
 Sample| Orbis only | National only | Union
 -- | -- | -- | --
-Respondent | 528 | - | 528
-Partner | 981 | - | 981
+Respondent | 528 | 548 | 556
+Partner | 981 | 984 | 1022
 
 ### 2015
 
@@ -84,11 +84,11 @@ Sample| Orbis only | National only | Union
 Respondent |  571  | 563 |  576
 Partner | 1076 | 1060 | 1085
 
-!missing(ln_sales, ln_employment, ln_assets, ln_material_costs): No data on material costs in National
+!missing(ln_sales, ln_employment, ln_assets, ln_material_costs)
 Sample| Orbis only | National only | Union
 -- | -- | -- | --
-Respondent | 560 | - | 560
-Partner | 1054 | - | 1054
+Respondent | 560 | 551 | 566
+Partner | 1054 | 1024 | 1068
 
 ## Hungary - TFP variables
 ### 2011
@@ -193,11 +193,11 @@ For respondents (sum:1543), in national only. By country, variable: share of non
 ### 2001
 !missing(ln_sales): 320<br/>
 !missing(ln_employment): 300<br/>
-!missing(ln_sales, ln_employment, ln_assets, ln_material_costs): -
+!missing(ln_sales, ln_employment, ln_assets, ln_material_costs): 296
 ### 2006
 !missing(ln_sales): 476<br/>
 !missing(ln_employment): 473<br/>
-!missing(ln_sales, ln_employment, ln_assets, ln_material_costs): -
+!missing(ln_sales, ln_employment, ln_assets, ln_material_costs): 460
 
 ## Hungary - respondent (sum: 559), national
 ### 2001

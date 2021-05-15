@@ -21,18 +21,18 @@ putpdf begin
   putpdf pagebreak
 
 * create a report about comparison (correl, mean and median of ratio, log scatter plot)
-  local ROorbis "emp Turnover Tangible Totalassets"
-  local ROvars "Employment Sales_EUR Tang_assets_EUR Fix_assets_EUR"
+  local ROorbis "emp Turnover Tangible Totalassets Materialcosts"
+  local ROvars "Employment Sales_EUR Tang_assets_EUR Fix_assets_EUR Expenses_EUR"
   local n : word count `ROorbis'
 
   putpdf paragraph, font(,20) halign(center)
   putpdf text ("Report on RO national and Orbis comparison"), linebreak(2)
   putpdf paragraph
-  putpdf text ("Variables from Orbis: emp Turnover Tangible"), linebreak
+  putpdf text ("Variables from Orbis: emp Turnover Tangible Totalassets Materialcosts"), linebreak
   putpdf paragraph
-  putpdf text ("Variables from RO balance: Employment Sales Tang_assets (original data converted to 1000 EUR, end of the year exchange rate)"), linebreak
+  putpdf text ("Variables from RO balance: Employment Sales Tang_assets Fix_assets_EUR Expenses_EUR (original data converted to 1000 EUR, end of the year exchange rate)"), linebreak
   putpdf paragraph
-  putpdf text ("Variables in RO balance with no comparable Orbis data: Expenses, Fix_assets"), linebreak(2)
+  putpdf text ("Variables in RO balance with no comparable Orbis data: -"), linebreak(2)
 
   forvalues i = 1/`n' {
     local a : word `i' of `ROorbis'
