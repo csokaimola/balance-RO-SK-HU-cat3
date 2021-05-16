@@ -94,9 +94,12 @@ keep if check == 3
 
 * report on extreme deviations in data enrichement (count and mean of ratio bins)
 
-  local ROorbis "Turnover emp Totalassets Materialcosts"
+  local ROorbis "Turnover emp Fixasset Materialcosts"
   local ROvars "Sales_EUR Employment Fix_assets_EUR Expenses_EUR"
   local n : word count `ROorbis'
+  
+  generate Fixasset = Tangible
+  replace Fixasset = Tangible + Intangibles if !missing(Intangibles)
 
   forvalues i = 1/`n' {
     local a : word `i' of `ROorbis'
@@ -120,7 +123,7 @@ capture log close
 log using "$output/report/deviations_logfile_RO.log", replace text 
 
 * write out in table
-local ROorbis "Turnover emp Totalassets Materialcosts"
+local ROorbis "Turnover emp Fixasset Materialcosts"
 foreach a in `ROorbis' {
     preserve
 	collapse (count) Count=`a'_ratio (mean) Mean=`a'_ratio,  by(`a'_bin)
@@ -141,9 +144,12 @@ keep if check == 3
 
 * report on extreme deviations in data enrichement (count and mean of ratio bins)
 
-  local SKorbis "Turnover emp Totalassets Materialcosts"
+  local SKorbis "Turnover emp Fixasset Materialcosts"
   local SKvars "sales employees fixed_assets material_cost"
   local n : word count `SKorbis'
+  
+  generate Fixasset = Tangible
+  replace Fixasset = Tangible + Intangibles if !missing(Intangibles)
 
   forvalues i = 1/`n' {
     local a : word `i' of `SKorbis'
@@ -167,7 +173,7 @@ capture log close
 log using "$output/report/deviations_logfile_SK.log", replace text 
 
 * write out in table
-local SKorbis "Turnover emp Totalassets Materialcosts"
+local SKorbis "Turnover emp Fixasset Materialcosts"
 foreach a in `SKorbis' {
     preserve
 	collapse (count) Count=`a'_ratio (mean) Mean=`a'_ratio,  by(`a'_bin)

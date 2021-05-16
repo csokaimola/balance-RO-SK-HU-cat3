@@ -21,14 +21,17 @@ putpdf begin
   putpdf pagebreak
 
 * create a report about comparison (correl, mean and median of ratio, log scatter plot)
-  local ROorbis "emp Turnover Tangible Totalassets Materialcosts"
+  local ROorbis "emp Turnover Tangible Fixasset Materialcosts"
   local ROvars "Employment Sales_EUR Tang_assets_EUR Fix_assets_EUR Expenses_EUR"
   local n : word count `ROorbis'
+  
+  generate Fixasset = Tangible
+  replace Fixasset = Tangible + Intangibles if !missing(Intangibles)
 
   putpdf paragraph, font(,20) halign(center)
   putpdf text ("Report on RO national and Orbis comparison"), linebreak(2)
   putpdf paragraph
-  putpdf text ("Variables from Orbis: emp Turnover Tangible Totalassets Materialcosts"), linebreak
+  putpdf text ("Variables from Orbis: emp Turnover Tangible Fixasset Materialcosts"), linebreak
   putpdf paragraph
   putpdf text ("Variables from RO balance: Employment Sales Tang_assets Fix_assets_EUR Expenses_EUR (original data converted to 1000 EUR, end of the year exchange rate)"), linebreak
   putpdf paragraph
@@ -83,18 +86,21 @@ putpdf begin
   putpdf pagebreak
   
 * create a report about comparison (correl, mean and median of ratio, log scatter plot) 
-  local SKorbis "emp Turnover Tangible Exportrevenue Materialcosts"
-  local SKvars "employees sales tang_assets sales_abroad material_cost"
+  local SKorbis "emp Turnover Tangible Fixasset Exportrevenue Materialcosts"
+  local SKvars "employees sales tang_assets fixed_assets sales_abroad material_cost"
   local n : word count `SKorbis'
+  
+  generate Fixasset = Tangible
+  replace Fixasset = Tangible + Intangibles if !missing(Intangibles)
 
   putpdf paragraph, font(,20) halign(center)
   putpdf text ("Report on SK national and Orbis comparison"), linebreak(2)
   putpdf paragraph
-  putpdf text ("Variables from Orbis: emp Turnover Tangible Exportrevenue Materialcosts"), linebreak
+  putpdf text ("Variables from Orbis: emp Turnover Tangible Fixasset Exportrevenue Materialcosts"), linebreak
   putpdf paragraph
-  putpdf text ("Variables from SK balance: employees sales tang_assets sales_abroad material_cost"), linebreak
+  putpdf text ("Variables from SK balance: employees sales tang_assetsfixed_assets sales_abroad material_cost"), linebreak
   putpdf paragraph
-  putpdf text ("Variables in SK balance not compared to Orbis data: fixed_assets employment (for small companies, has no time series data), registered type NACE District foreign public sizecat"), linebreak(2)
+  putpdf text ("Variables in SK balance not compared to Orbis data: employment (for small companies, has no time series data), registered type NACE District foreign public sizecat"), linebreak(2)
 
   forvalues i = 1/`n' {
     local a : word `i' of `SKorbis'
