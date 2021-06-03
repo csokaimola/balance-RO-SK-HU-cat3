@@ -1,5 +1,5 @@
 # Compare HU-RO-SK balance data to Orbis and Harmonize Balance Data for HU, RO, SK
-This repo deals with balance data of HU,RO,SK: issues 78 & 76 in [ss-descriptives](https://github.com/ceumicrodata/ss-descriptives/issues)<br/>
+This repo deals with balance data of HU,RO,SK: issues 76,78,80,81 in [ss-descriptives](https://github.com/ceumicrodata/ss-descriptives/issues)<br/>
 Issue 76: Compare HU-RO-SK balance data to Orbis<br/>
 - Convert values to EUR
 - Ensure variables mean the same in all three
@@ -8,6 +8,11 @@ Issue 76: Compare HU-RO-SK balance data to Orbis<br/>
 Issue 78: Harmonize Balance Data for HU, RO, SK<br/>
 - in the CAT2 data, report observations by country by year, coverage of individual variables.
 - Correlate common variables in Orbis and HU-RO-SK, we expect rho > 0.99, explore if there are major discrepancies.
+
+Issue 80,81: Tests for TFP variable availability in HU, RO, SK national data
+And check extreme deviations
+SK, RO national data is coming from Álmos, HU data from Andris.
+After the data checks, it creates an appended HU, RO, SK national database (output/balance_HU_RO_cat3) that includes original and EUR converted data as well.
 
 # Code
 - `SK-database.do`: identifies the duplicate and merges the company names and id (supplier_survey_SK) to balance data (SK_suppliers_data), creating SK_balance_data
@@ -18,7 +23,19 @@ Issue 78: Harmonize Balance Data for HU, RO, SK<br/>
   - Correlate common variables in Orbis and HU-RO-SK
   - check unit (mean, median of ratio)
   - check outliers (log scatterplot)
-
+- `test.do`:
+- `deviation_table.do`: Checking extreme deviations in data enrichement, proposed by Gábor Békés: Take variable x, say, sales from both sources, for 2015. xs= sales(orbis)/ sales(national), non missing, non zero. No logs. Create disjunct bins for xs, and a table, with two columns:
+1. Count of obs in bin
+2. Mean of xs in the bin.
+Bins:
+=1
+0.952-1.05 but not 1
+0.8-0.952
+1.05-1.25
+0.5-0.8
+1.25-2
+<0.5
+over 2
 (Preliminary codes, not needed for further use:
 - `SK-match-correct`: helped us realise that except for 15 companies, all "not matched" was because year=.. Tried to run name-generaliser.py on names of the 15 companies not matched (based on BvDid), but didn't work because of character issues. So we created matches by looking at the names: not_matched_orbis_SK_fordito.csv.
 - `compare-orbis`: preliminary compare balance&orbis, uses original data not converted in EUR.)
